@@ -1,0 +1,90 @@
+<!doctype html>
+<html>
+  <head>
+    <script
+  src="https://code.jquery.com/jquery-3.4.1.min.js"
+  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+  crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:900&display=swap" rel="stylesheet">
+    <style>
+     html, body {
+       margin:0;
+       padding:0;
+       overflow:hidden;
+       background:#333;
+     }
+      .container {
+        background:url('cokebg.png') #ffffff no-repeat center;
+        width:1080px;
+        height:1920px;
+        position:absolute;
+      }
+        #results {
+          position: absolute;
+          left:200px;
+          top:415px;
+          width:410px;
+          color: white;
+          font-family: Roboto, Arial, sans-serif;
+          text-align: center;
+          font-size: 130px;
+          line-height:100%;
+          letter-spacing: -2px;
+          overflow: hidden;
+        }
+          .currency {
+            vertical-align: super;
+            font-size: 60px;
+          }
+
+          .decimals {
+            vertical-align: super;
+            font-size: 60px;
+            letter-spacing: 0px;
+          }
+
+    </style>
+    <script>
+
+      // set up
+      cellCheckFrequency = 5000;
+
+      $(function() {
+        cellUpdater();
+      });
+
+      function cellUpdater() {
+        var api = 'https://spreadsheets.google.com/feeds/cells/';
+        var spreadsheet = '1cAhb9Qj598PxkwHU1p89vc5giTJJdpv9Pti6QExAuaU'; //$('#sID').val();
+        var worksheet =   'default'; //$('#wID').val();
+        var row =         '1'; //$('#r').val();
+        var col =         '1'; //$('#c').val();
+        var defaultPrice = '8.88';
+        var url = api+spreadsheet+'/'+worksheet+'/public/basic/R'+row+'C'+col+'?alt=json';
+        $.getJSON(url)
+    		.done(function(data){
+            console.log(data);
+            if(data.entry) {
+                var wholes = data.entry.content['$t'].split('.')[0];
+                var decimals = data.entry.content['$t'].split('.').reverse()[0];
+                var displayValue = '<span class="currency">$</span>' + wholes + '<span class="decimals">.' + decimals + '</span>';
+    				    $('#results').html(displayValue);
+            } else {
+                $('#results').html('<span class="currency">$</span>' + defaultPrice);
+            }
+        })
+      	.fail(function(){
+          	$('#results').html('<span class="currency">$</span>' + 'X.XX');
+      	})
+        .always(function() {
+          setTimeout(cellUpdater, cellCheckFrequency);
+        });
+      }
+    </script>
+	</head>
+  <body>
+    <div class="container">
+      <div id="results"></div>
+    </div>
+  </body>
+</html>
