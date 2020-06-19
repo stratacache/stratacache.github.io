@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Coding with Cody</title>
+    <script src="https://code.jquery.com/jquery-3.5.0.min.js"></script>
+    <link rel="icon" type="image/png" href="scala.png">
+    <style>
+      .answer {
+        width:500px; height:40px; backlground:gray;
+      }
+    </style>
+    <script>
+      $(function(){
+
+        $('.answer').click(function(){
+          $(this).css('background', 'red');
+        });
+
+        $('.answer.correct').click(function(){
+          $(this).css('background', 'green');
+          $('.jellyfish').fadeOut();
+        });
+
+        
+
+      });
+    </script>
+  </head>
+
+  <body style="background:url('background.jpg')">
+    <div style="background:white; width:600px; height:400px;">
+      <div style="position:relative">
+        <img src="scala.png" style="width:500px;">
+        <div class="jellyfish" style="position:absolute; top:0; left:0; background:white; width:400px; height:94px;"></div>
+      </div>
+      <button class="answer correct">Scala</button>
+      <button class="answer">Sony</button>
+      <button class="answer">Seafood</button>
+      <button class="answer">Samsung</button>
+    </div>
+  </body>
+</html>
